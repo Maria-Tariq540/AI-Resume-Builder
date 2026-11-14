@@ -1,141 +1,337 @@
-```markdown
-# TruthCV — Zero-Hallucination AI Resume & Cover Letter Builder
+# 🚀 TruthCV — Zero-Hallucination AI Resume & Cover Letter Builder
 
-**TruthCV** is an SEO-driven, full-stack web application designed for honest, high-impact job applications. It enforces a strict **Zero-Hallucination Rule**: the AI is mathematically prohibited from fabricating skills, companies, job titles, or fake metrics, reframing and optimizing only verified facts stored in the candidate's **Master Career Vault**.
+**Build an honest resume. Match the right opportunities. Get hired without inventing your experience.**
 
----
+TruthCV is an SEO-driven, full-stack AI-powered resume and cover letter builder designed to help job seekers create tailored, ATS-friendly job applications without compromising on honesty.
 
-## 🚀 Key Features
+Its core principle is simple: **Zero Hallucinations. 100% Verifiable Career Information.**
 
-1. **Zero-Hallucination Constraint**:
-   - AI outputs are strictly validated via Zod schemas (`src/lib/schemas/ai-outputs.ts`).
-   - Every bullet rephrasing includes a `truth_check` linking back to verified Vault records and a `reason` explaining which JD keyword it addresses.
-2. **No Auth Wall for Testing**:
-   - Guest users can paste or upload a resume + job description and run the complete tailoring flow immediately using `localStorage`.
-   - Seamlessly syncs to Supabase PostgreSQL when credentials are provided.
-3. **6 Force-Static SEO Landing Pages**:
-   - Statically rendered with custom metadata, OpenGraph tags, canonical URLs, and JSON-LD `SoftwareApplication` + `FAQPage` schemas:
-     - `/` — Free AI Resume Builder That Never Lies About Your Experience
-     - `/tailor-resume-to-job-description` — Tailor Your Resume to Any Job Description in 30 Seconds
-     - `/resume-job-match-checker` — Resume Job Match Checker: Should You Even Apply?
-     - `/update-resume-for-each-job` — Update Your Resume for Each Job Automatically
-     - `/honest-ai-resume-builder` — The Honest AI Resume Builder (Zero Hallucinations)
-     - `/resume-and-cover-letter-generator` — Resume & Cover Letter Generator from Any Job Description
-   - Automatically generated `/sitemap.xml` and `/robots.txt`.
-4. **Master Career Vault (`/vault`)**:
-   - Central repository for all verified career history: contact info, skills tags, roles, projects, and education.
-   - Includes PDF resume text extractor (`/api/parse-resume`) to auto-populate the Vault.
-5. **Interactive 3-Step Workspace (`/tailor/[id]`)**:
-   - **Step 1: Fit Gatekeeper (`FitGatekeeperCard.tsx`)**: Circular match gauge (0-100), verdict badge ("Strong Match" | "Worth Applying" | "Low Fit — Reconsider"), matched verified skills, and missing non-negotiables alert.
-   - **Step 2: Line-by-Line Track Changes Diff Editor (`BulletDiffEditor.tsx`)**: Split diff cards with individual Accept/Reject toggles. Only accepted changes compile into the final resume.
-   - **Step 3: Cover Letter & Recruiter DM (`CoverLetterAndDmTab.tsx`)**: Targeted 3-paragraph cover letter + under-300-char LinkedIn cold connection note.
-   - **Step 4: "Defend Your Resume" Prep (`InterviewDefenseTab.tsx`)**: 5 tough interview questions targeting your specific gaps and reframed bullets with grounded honest answering scripts.
-   - **Step 5: ATS-Safe PDF Export (`AtsResumeDocument.tsx`)**: Single-column clean typography, zero parse-breaking graphics, 100% selectable text.
+Unlike conventional AI resume builders, TruthCV never fabricates skills, job titles, companies, qualifications, achievements, or performance metrics. It uses a verified **Master Career Vault** as its single source of truth, allowing AI to reframe, optimize, and tailor existing experience to specific job descriptions.
 
 ---
 
-## 🛠️ Tech Stack
+## ✨ Key Features
 
-- **Framework**: Next.js 16 (App Router, Server Actions, TypeScript)
-- **Styling**: Tailwind CSS v4 + Lucide Icons
-- **Database & Auth**: Supabase PostgreSQL with Row Level Security (RLS)
-- **AI Engine**: Vercel AI SDK (`ai` + `@ai-sdk/openai` / `@ai-sdk/google`) with deterministic fallback
-- **PDF Generation & Parsing**: `@react-pdf/renderer` + `unpdf`
+### 🛡️ 1. Zero-Hallucination AI Engine
+- Strict AI output validation using Zod schemas.
+- Every rewritten resume bullet includes a `truth_check` linked to verified Career Vault records.
+- Each modification includes a `reason` explaining its relevance to the target job description.
+- Prevents fabricated skills, achievements, employment history, and metrics.
+- Includes a deterministic fallback engine when AI API credentials are unavailable.
+
+### ⚡ 2. Instant Guest Access
+- No registration or authentication required to test the application.
+- Upload or paste an existing resume and job description.
+- Complete resume-tailoring workflow using browser `localStorage`.
+- Optional synchronization with Supabase PostgreSQL when credentials are configured.
+
+### 🔍 3. SEO-Optimized Landing Pages
+Six statically rendered landing pages targeting high-intent search queries:
+
+| Route | Target Keyword |
+|---|---|
+| `/` | Free AI Resume Builder |
+| `/tailor-resume-to-job-description` | Tailor Resume to Job Description |
+| `/resume-job-match-checker` | Resume Job Match Checker |
+| `/update-resume-for-each-job` | Update Resume for Each Job |
+| `/honest-ai-resume-builder` | Honest AI Resume Builder |
+| `/resume-and-cover-letter-generator` | Resume and Cover Letter Generator |
+
+SEO implementation includes:
+- Custom metadata and OpenGraph tags.
+- Canonical URLs.
+- JSON-LD structured data (`SoftwareApplication` and `FAQPage`).
+- Automatically generated `sitemap.xml`.
+- Automatically generated `robots.txt`.
+- Internal linking between landing pages.
+
+### 🗂️ 4. Master Career Vault
+A centralized repository containing verified professional information:
+
+- Personal and contact information.
+- Technical and professional skills.
+- Employment history and job roles.
+- Academic qualifications and education.
+- Projects and verified achievements.
+- PDF resume parsing and automatic Vault population.
+
+**API:** `/api/parse-resume`
+
+### 🎯 5. Interactive Resume Tailoring Workspace
+
+A structured five-stage workflow for creating targeted job applications.
+
+**Step 1 — Fit Gatekeeper**
+- Circular job-match score (0–100).
+- Match verdict:
+  - 🟢 Strong Match
+  - 🟡 Worth Applying
+  - 🔴 Low Fit — Reconsider
+- Matched verified skills.
+- Missing non-negotiable requirements.
+
+**Step 2 — Line-by-Line Diff Editor**
+- Side-by-side comparison of original and AI-rewritten resume bullets.
+- Individual Accept/Reject controls.
+- Every proposed modification includes a truth-check reference.
+- Only accepted modifications appear in the final resume.
+
+**Step 3 — Cover Letter & Recruiter DM**
+- Personalized, targeted three-paragraph cover letter.
+- LinkedIn connection message under 300 characters.
+- Content grounded in verified career information.
+
+**Step 4 — Interview Defense Preparation**
+- Five challenging interview questions.
+- Questions tailored to specific experience gaps and rewritten resume bullets.
+- Honest, evidence-based answering scripts.
+- Helps candidates confidently defend everything written in their applications.
+
+**Step 5 — ATS-Friendly PDF Export**
+- Clean, professional, single-column layout.
+- Selectable PDF text.
+- No unnecessary graphics or parsing-unfriendly elements.
+- Designed for compatibility with Applicant Tracking Systems (ATS).
 
 ---
 
-## 📦 Getting Started
+## 🛠️ Technology Stack
 
-### 1. Install Dependencies
-```bash
-npm install --legacy-peer-deps
+| Technology | Purpose |
+|---|---|
+| Next.js 16 | Full-stack framework and App Router |
+| TypeScript | Type safety |
+| Tailwind CSS v4 | Responsive UI and styling |
+| Lucide Icons | Interface icons |
+| Supabase PostgreSQL | Database and cloud persistence |
+| Supabase Auth | Authentication infrastructure |
+| Row Level Security (RLS) | Database access protection |
+| Vercel AI SDK | AI integration |
+| OpenAI / Google Gemini | AI-powered content generation |
+| Zod | Strict AI output validation |
+| React PDF Renderer | ATS-friendly PDF generation |
+| unpdf | PDF text extraction |
+| LocalStorage | Guest-mode persistence |
 
+---
+
+## 🏗️ Project Architecture
+
+```text
+TruthCV/
+│
+├── src/
+│   ├── app/
+│   │   ├── (marketing)/
+│   │   │   ├── page.tsx
+│   │   │   ├── tailor-resume-to-job-description/
+│   │   │   ├── resume-job-match-checker/
+│   │   │   ├── update-resume-for-each-job/
+│   │   │   ├── honest-ai-resume-builder/
+│   │   │   └── resume-and-cover-letter-generator/
+│   │   │
+│   │   ├── (app)/
+│   │   │   ├── dashboard/
+│   │   │   ├── vault/
+│   │   │   └── tailor/
+│   │   │       └── [id]/
+│   │   │
+│   │   ├── api/
+│   │   │   ├── parse-resume/
+│   │   │   ├── analyze-fit/
+│   │   │   └── generate-tailored/
+│   │   │
+│   │   ├── sitemap.ts
+│   │   └── robots.ts
+│   │
+│   ├── components/
+│   │   ├── Navbar.tsx
+│   │   ├── seo/
+│   │   │   ├── LandingTemplate.tsx
+│   │   │   └── InternalSeoFooter.tsx
+│   │   ├── workspace/
+│   │   │   ├── FitGatekeeperCard.tsx
+│   │   │   ├── BulletDiffEditor.tsx
+│   │   │   ├── CoverLetterAndDmTab.tsx
+│   │   │   └── InterviewDefenseTab.tsx
+│   │   └── pdf/
+│   │       ├── AtsResumeDocument.tsx
+│   │       └── PdfDownloadButton.tsx
+│   │
+│   └── lib/
+│       ├── schemas/
+│       │   └── ai-outputs.ts
+│       ├── storage.ts
+│       └── supabase/
+│           ├── client.ts
+│           └── server.ts
+│
+├── supabase/
+│   └── schema.sql
+│
+├── public/
+├── .env.example
+├── package.json
+└── README.md
 ```
 
-### 2. Configure Environment Variables
+---
 
-Copy `.env.example` to `.env.local`:
+## ⚙️ Getting Started
+
+### Prerequisites
+
+Make sure you have the following installed:
+
+- [Node.js](https://nodejs.org/) (LTS recommended)
+- npm
+- Git
+- A code editor such as [Visual Studio Code](https://code.visualstudio.com/)
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/YOUR-USERNAME/TruthCV.git
+```
+
+```bash
+cd TruthCV
+```
+
+### 2. Install Dependencies
+
+```bash
+npm install --legacy-peer-deps
+```
+
+### 3. Configure Environment Variables
+
+Create your local environment file:
 
 ```bash
 cp .env.example .env.local
-
 ```
 
-Add your optional API keys:
+Add your API credentials:
 
-* `OPENAI_API_KEY` or `GOOGLE_GENERATIVE_AI_API_KEY` (AI generation falls back gracefully to a deterministic rules engine if omitted).
-* `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` (Enables cloud persistence).
+```env
+# AI Provider (Optional)
+OPENAI_API_KEY=
 
-### 3. Supabase Database Setup
+# Alternatively, use Google Gemini
+GOOGLE_GENERATIVE_AI_API_KEY=
 
-Execute the migration SQL in your Supabase SQL Editor:
-
-```sql
--- See supabase/schema.sql for the complete schema and RLS policies
-
+# Supabase Configuration (Optional)
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
 ```
 
-### 4. Run Development Server
+**Note:** AI generation uses a deterministic fallback engine when AI credentials are not configured. Supabase credentials are optional and enable cloud persistence.
+
+Never commit `.env.local` or expose secret API keys in client-side code.
+
+### 4. Configure Supabase (Optional)
+
+1. Create a project in [Supabase](https://supabase.com/).
+2. Open the Supabase SQL Editor.
+3. Execute the migration and schema definitions from:
+
+```text
+supabase/schema.sql
+```
+
+4. Configure the required environment variables in `.env.local`.
+
+### 5. Start the Development Server
 
 ```bash
 npm run dev
-
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to view the application.
-
----
-
-## 🗂️ Project Architecture
+Open your browser and navigate to:
 
 ```text
-src/
-├── app/
-│   ├── (marketing)/
-│   │   ├── page.tsx                                        # / (Free AI Resume Builder)
-│   │   ├── tailor-resume-to-job-description/page.tsx
-│   │   ├── resume-job-match-checker/page.tsx
-│   │   ├── update-resume-for-each-job/page.tsx
-│   │   ├── honest-ai-resume-builder/page.tsx
-│   │   └── resume-and-cover-letter-generator/page.tsx
-│   ├── (app)/
-│   │   ├── dashboard/page.tsx                              # Applications tracker & history
-│   │   ├── vault/page.tsx                                  # Master Career Vault editor & PDF parser
-│   │   └── tailor/[id]/page.tsx                            # 3-step workspace (Fit -> Diff -> Export)
-│   ├── api/
-│   │   ├── parse-resume/route.ts                           # PDF text extractor into Vault JSON
-│   │   ├── analyze-fit/route.ts                            # Gatekeeper fit score & gap analysis
-│   │   └── generate-tailored/route.ts                      # Diff bullets + Cover letter + Cold DM + Defense
-│   ├── sitemap.ts
-│   └── robots.ts
-├── components/
-│   ├── Navbar.tsx
-│   ├── seo/
-│   │   ├── LandingTemplate.tsx                             # SEO layout + JSON-LD schema + Quick test demo
-│   │   └── InternalSeoFooter.tsx                           # Cross-links all 6 keyword pages
-│   ├── workspace/
-│   │   ├── FitGatekeeperCard.tsx                           # Score gauge, matched & missing requirements
-│   │   ├── BulletDiffEditor.tsx                            # Track Changes with Accept / Reject toggles
-│   │   ├── CoverLetterAndDmTab.tsx                         # 3-paragraph letter & 300-char LinkedIn DM
-│   │   └── InterviewDefenseTab.tsx                         # 5 tough technical screen questions & scripts
-│   └── pdf/
-│       ├── AtsResumeDocument.tsx                           # Clean single-column ATS React-PDF document
-│       └── PdfDownloadButton.tsx                           # Client-side dynamic PDF download trigger
-├── lib/
-│   ├── schemas/ai-outputs.ts                               # Strict Zod schemas enforcing Zero-Hallucination
-│   ├── storage.ts                                          # LocalStorage adapter & sample candidate data
-│   └── supabase/ (client.ts, server.ts)                    # SSR & browser Supabase clients with fallbacks
-└── supabase/
-    └── schema.sql                                          # PostgreSQL schema with Row Level Security
-
+http://localhost:3000
 ```
+
+🎉 **TruthCV is ready to run!**
 
 ---
 
-## 📄 License
+## 🔐 Privacy & Data Integrity
 
-This project is open-source and available under the [MIT License](https://www.google.com/search?q=LICENSE).
+TruthCV is designed around transparency and verified career information.
 
-```
+- Guest testing does not require account registration.
+- Guest data is stored locally using browser `localStorage`.
+- Cloud persistence is optional.
+- Supabase Row Level Security policies help protect stored user data.
+- AI-generated content must pass schema validation.
+- Resume modifications retain references to their verified source records.
+- Candidates retain control over which suggested changes are accepted.
 
-```
+**Important:** Schema validation and source references help enforce factual consistency, but they do not independently guarantee that every AI-generated statement is true. Users should review and verify all final application content.
+
+---
+
+## 🗺️ Development Roadmap
+
+- [x] Project architecture and technology selection.
+- [x] Zero-hallucination design specification.
+- [x] Master Career Vault design.
+- [x] Guest-mode workflow design.
+- [x] SEO landing page structure.
+- [ ] Complete resume parsing implementation.
+- [ ] Complete AI-powered job-match analysis.
+- [ ] Implement line-by-line resume diff editor.
+- [ ] Implement cover letter and recruiter DM generation.
+- [ ] Implement interview defense preparation.
+- [ ] Complete ATS-friendly PDF export.
+- [ ] Integrate Supabase authentication and cloud persistence.
+- [ ] Perform end-to-end testing.
+- [ ] Deploy production version.
+
+---
+
+## 🎯 Project Objectives
+
+TruthCV aims to solve several common problems in AI-assisted job applications:
+
+1. **AI Fabrication:** Preventing candidates from unknowingly submitting invented qualifications or experience.
+2. **Generic Resumes:** Making applications more relevant to individual job descriptions.
+3. **ATS Compatibility:** Producing structured resumes that are easier for Applicant Tracking Systems to parse.
+4. **Application Confidence:** Helping candidates understand and defend every statement in their resumes.
+5. **Career Organization:** Maintaining a reusable, verified professional profile through the Master Career Vault.
+
+---
+
+## 🤝 Contributing
+
+Contributions, suggestions, feature requests, and bug reports are welcome.
+
+To contribute:
+
+1. Fork this repository.
+2. Create a feature branch.
+3. Implement your changes.
+4. Test your implementation.
+5. Submit a Pull Request describing your contribution.
+
+Please ensure that all contributions preserve TruthCV's core zero-hallucination principle.
+
+---
+
+## 📜 License
+
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
+## ⭐ Support the Project
+
+If you find TruthCV useful, consider giving this repository a ⭐ on GitHub.
+
+Your support helps encourage the development of transparent, responsible, and trustworthy AI-powered career tools.
+
+**TruthCV — Your Experience. Your Truth. Your Next Opportunity.**
+
