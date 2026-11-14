@@ -1,6 +1,7 @@
+```markdown
 # TruthCV — Zero-Hallucination AI Resume & Cover Letter Builder
 
-TruthCV is an SEO-driven, full-stack web application designed for honest, high-impact job applications. It enforces a strict **Zero-Hallucination Rule**: the AI is mathematically prohibited from fabricating skills, companies, job titles, or fake metrics, reframing and optimizing only verified facts stored in the candidate's **Master Career Vault**.
+**TruthCV** is an SEO-driven, full-stack web application designed for honest, high-impact job applications. It enforces a strict **Zero-Hallucination Rule**: the AI is mathematically prohibited from fabricating skills, companies, job titles, or fake metrics, reframing and optimizing only verified facts stored in the candidate's **Master Career Vault**.
 
 ---
 
@@ -35,7 +36,7 @@ TruthCV is an SEO-driven, full-stack web application designed for honest, high-i
 
 ## 🛠️ Tech Stack
 
-- **Framework**: Next.js 15 (App Router, Server Actions, TypeScript)
+- **Framework**: Next.js 16 (App Router, Server Actions, TypeScript)
 - **Styling**: Tailwind CSS v4 + Lucide Icons
 - **Database & Auth**: Supabase PostgreSQL with Row Level Security (RLS)
 - **AI Engine**: Vercel AI SDK (`ai` + `@ai-sdk/openai` / `@ai-sdk/google`) with deterministic fallback
@@ -48,70 +49,93 @@ TruthCV is an SEO-driven, full-stack web application designed for honest, high-i
 ### 1. Install Dependencies
 ```bash
 npm install --legacy-peer-deps
+
 ```
 
 ### 2. Configure Environment Variables
+
 Copy `.env.example` to `.env.local`:
+
 ```bash
 cp .env.example .env.local
+
 ```
+
 Add your optional API keys:
-- `OPENAI_API_KEY` or `GOOGLE_GENERATIVE_AI_API_KEY` (AI generation falls back gracefully to a deterministic rules engine if omitted).
-- `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` (Enables cloud persistence).
+
+* `OPENAI_API_KEY` or `GOOGLE_GENERATIVE_AI_API_KEY` (AI generation falls back gracefully to a deterministic rules engine if omitted).
+* `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` (Enables cloud persistence).
 
 ### 3. Supabase Database Setup
+
 Execute the migration SQL in your Supabase SQL Editor:
+
 ```sql
 -- See supabase/schema.sql for the complete schema and RLS policies
+
 ```
 
 ### 4. Run Development Server
+
 ```bash
 npm run dev
+
 ```
+
 Open [http://localhost:3000](http://localhost:3000) to view the application.
 
 ---
 
 ## 🗂️ Project Architecture
 
-```
+```text
 src/
 ├── app/
 │   ├── (marketing)/
-│   │   ├── page.tsx                                     # / (Free AI Resume Builder)
+│   │   ├── page.tsx                                        # / (Free AI Resume Builder)
 │   │   ├── tailor-resume-to-job-description/page.tsx
 │   │   ├── resume-job-match-checker/page.tsx
 │   │   ├── update-resume-for-each-job/page.tsx
 │   │   ├── honest-ai-resume-builder/page.tsx
 │   │   └── resume-and-cover-letter-generator/page.tsx
 │   ├── (app)/
-│   │   ├── dashboard/page.tsx                           # Applications tracker & history
-│   │   ├── vault/page.tsx                               # Master Career Vault editor & PDF parser
-│   │   └── tailor/[id]/page.tsx                         # 3-step workspace (Fit -> Diff -> Export)
+│   │   ├── dashboard/page.tsx                              # Applications tracker & history
+│   │   ├── vault/page.tsx                                  # Master Career Vault editor & PDF parser
+│   │   └── tailor/[id]/page.tsx                            # 3-step workspace (Fit -> Diff -> Export)
 │   ├── api/
-│   │   ├── parse-resume/route.ts                        # PDF text extractor into Vault JSON
-│   │   ├── analyze-fit/route.ts                         # Gatekeeper fit score & gap analysis
-│   │   └── generate-tailored/route.ts                   # Diff bullets + Cover letter + Cold DM + Defense
+│   │   ├── parse-resume/route.ts                           # PDF text extractor into Vault JSON
+│   │   ├── analyze-fit/route.ts                            # Gatekeeper fit score & gap analysis
+│   │   └── generate-tailored/route.ts                      # Diff bullets + Cover letter + Cold DM + Defense
 │   ├── sitemap.ts
 │   └── robots.ts
 ├── components/
 │   ├── Navbar.tsx
 │   ├── seo/
-│   │   ├── LandingTemplate.tsx                          # SEO layout + JSON-LD schema + Quick test demo
-│   │   └── InternalSeoFooter.tsx                        # Cross-links all 6 keyword pages
+│   │   ├── LandingTemplate.tsx                             # SEO layout + JSON-LD schema + Quick test demo
+│   │   └── InternalSeoFooter.tsx                           # Cross-links all 6 keyword pages
 │   ├── workspace/
-│   │   ├── FitGatekeeperCard.tsx                        # Score gauge, matched & missing requirements
-│   │   ├── BulletDiffEditor.tsx                         # Track Changes with Accept / Reject toggles
-│   │   ├── CoverLetterAndDmTab.tsx                      # 3-paragraph letter & 300-char LinkedIn DM
-│   │   └── InterviewDefenseTab.tsx                      # 5 tough technical screen questions & scripts
+│   │   ├── FitGatekeeperCard.tsx                           # Score gauge, matched & missing requirements
+│   │   ├── BulletDiffEditor.tsx                            # Track Changes with Accept / Reject toggles
+│   │   ├── CoverLetterAndDmTab.tsx                         # 3-paragraph letter & 300-char LinkedIn DM
+│   │   └── InterviewDefenseTab.tsx                         # 5 tough technical screen questions & scripts
 │   └── pdf/
-│       ├── AtsResumeDocument.tsx                        # Clean single-column ATS React-PDF document
-│       └── PdfDownloadButton.tsx                        # Client-side dynamic PDF download trigger
+│       ├── AtsResumeDocument.tsx                           # Clean single-column ATS React-PDF document
+│       └── PdfDownloadButton.tsx                           # Client-side dynamic PDF download trigger
 ├── lib/
-│   ├── schemas/ai-outputs.ts                            # Strict Zod schemas enforcing Zero-Hallucination
-│   ├── storage.ts                                       # LocalStorage adapter & sample candidate data
-│   └── supabase/ (client.ts, server.ts)                 # SSR & browser Supabase clients with fallbacks
+│   ├── schemas/ai-outputs.ts                               # Strict Zod schemas enforcing Zero-Hallucination
+│   ├── storage.ts                                          # LocalStorage adapter & sample candidate data
+│   └── supabase/ (client.ts, server.ts)                    # SSR & browser Supabase clients with fallbacks
 └── supabase/
-    └── schema.sql                                       # PostgreSQL schema with Row Level Security
+    └── schema.sql                                          # PostgreSQL schema with Row Level Security
+
+```
+
+---
+
+## 📄 License
+
+This project is open-source and available under the [MIT License](https://www.google.com/search?q=LICENSE).
+
+```
+
 ```
